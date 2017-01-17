@@ -68,4 +68,11 @@
         android:text="Sign Up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <Button
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/btn_sign_in"
+        android:text="Sign In"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
