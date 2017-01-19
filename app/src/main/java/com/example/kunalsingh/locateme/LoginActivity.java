@@ -103,4 +103,13 @@ public class LoginActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthStateListener);
         }
     }
+
+    public void startSignInActivity(View view){
+        Intent in = new Intent(this,SignInActivity.class);
+        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(in);
+    }
+
 }
