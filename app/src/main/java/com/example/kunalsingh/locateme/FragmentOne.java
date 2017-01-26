@@ -20,7 +20,6 @@ public class FragmentOne extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_one,container,false);
 
-
         return view;
 
     }
