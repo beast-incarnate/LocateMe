@@ -2,14 +2,21 @@ package com.example.kunalsingh.locateme;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -28,11 +35,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         this.ctx = ctx;
         this.contactsName = contactsName;
         this.child = child;
+
     }
 
     @Override
     public int getGroupCount() {
-        return contactsName.size();
+        return contactsName.size()-1;
     }
 
     @Override
@@ -70,20 +78,38 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         Log.d(TAG,"adapter : "+i);
         String name = contactsName.get(i);
-        String initials = name.substring(0,1);
+
         if(view==null){
             LayoutInflater layoutInflater = (LayoutInflater) this.ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = layoutInflater.inflate(R.layout.list_item,viewGroup,false);
         }
-
         TextView textView = (TextView)view.findViewById(R.id.contact_name);
         textView.setHint(name);
+        String s = ""+name.charAt(0);
+        for(int i2=0;i2<name.length();i2++){
+            if(name.charAt(i2)==' '){
+                for(int j=i2+1;j<name.length();j++){
+                    if(name.charAt(j)!=' '){
+                        s=s+name.charAt(j);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        ImageView imageView = (ImageView)view.findViewById(R.id.contacts_image);
+        Bitmap bitmap = Bitmap.createBitmap(100,100,Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setColor(Color.BLUE);
+        c.drawText(s.toUpperCase(),20.0f,25.0f,paint);
+        imageView.setImageBitmap(bitmap);
+
         return view;
     }
 
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
-
 
         Log.d(TAG,"adapter : "+i+" "+i1);
         if(view==null) {
@@ -93,7 +119,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView textView = (TextView) view.findViewById(R.id.tv_expanded_list);
         textView.setText(child.get(i1));
-
 
         return view;
     }
