@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -21,13 +22,18 @@ public class LoginActivity extends AppCompatActivity {
     EditText fn,ln,phone,email,pass;
     Button signUp;
     FirebaseAuth mAuth;
+    Firebase mRef;
     FirebaseAuth.AuthStateListener mAuthStateListener;
+    public static final String TAG="LoginActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
 
+        mRef = new Firebase("https://locateme-a9ef0.firebaseio.com/");
+
+        //Log.d(TAG,"check Firebase : "+mRef);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -63,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String phoneNumber = phone.getText().toString();
                 final String emailUser = email.getText().toString();
                 final String passUser = pass.getText().toString();
+
                 if(firstName.equals("")||lastName.equals("")||phoneNumber.equals("")||emailUser.equals("")||passUser.equals("")){
                     Toast.makeText(LoginActivity.this, "Fields are Empty", Toast.LENGTH_SHORT).show();
                 }else{
@@ -77,7 +84,19 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this,String.valueOf(task.getException()), Toast.LENGTH_SHORT).show();
                                // Toast.makeText(LoginActivity.this, "Sign Up failed", Toast.LENGTH_SHORT).show();
                             }else {
-                                    Intent in = new Intent(LoginActivity.this,MainActivity.class);
+
+                                    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                                    if(mUser!=null){
+
+                                        Firebase mChild = mRef.child(mUser.getUid());
+                                        Firebase mPhone = mRef.child(phoneNumber);
+                                        mPhone.child("Latitude");
+                                        mPhone.child("Longitude");
+                                        Log.d(TAG,"checking existence of User");
+                                    }
+
+                                    Intent in = new Intent(LoginActivity.this,PermisssionActivity.class);
                                     in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
