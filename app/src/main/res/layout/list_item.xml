@@ -6,17 +6,23 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
+        android:layout_margin="@dimen/image_view_margin"
         android:id="@+id/contacts_image"
         android:layout_alignParentLeft="true"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/initial_circle"
+        android:layout_centerInParent="true"
+
+
+        />
     <TextView
         android:layout_toRightOf="@id/contacts_image"
         android:id="@+id/contact_name"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/list_item_height"
         android:textAppearance="?android:textAppearanceMedium"
-        android:paddingLeft="@dimen/list_horizontal_margin"
+        android:paddingLeft="@dimen/image_view_margin"
         android:gravity="center_vertical"
         tools:text="Name"/>
 
