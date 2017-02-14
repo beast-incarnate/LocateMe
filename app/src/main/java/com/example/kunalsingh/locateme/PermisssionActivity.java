@@ -31,11 +31,13 @@ public class PermisssionActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-
+//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permisssion);
+
+
 
         String permission = Manifest.permission.READ_CONTACTS;
         int res = this.checkCallingOrSelfPermission(permission);
@@ -48,7 +50,7 @@ public class PermisssionActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{android.Manifest.permission.READ_CONTACTS}, 100);
+                requestPermissions(new String[]{android.Manifest.permission.READ_CONTACTS , Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_PHONE_STATE}, 100);
             }else{
                // new MainActivity().readContacts();
                 Intent intent = new Intent(this,MainActivity.class);
