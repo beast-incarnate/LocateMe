@@ -1,6 +1,5 @@
 package com.example.kunalsingh.locateme;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,6 +75,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
         TextView textView = (TextView)view.findViewById(R.id.contact_name);
         textView.setHint(name);
+
+
+
         return view;
     }
 
