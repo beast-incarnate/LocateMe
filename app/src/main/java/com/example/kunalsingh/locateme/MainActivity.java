@@ -112,7 +112,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
-               // swipeRefreshLayout.setEnabled(false);
+
                 Log.d(TAG,"checking"+event.getAction());
                 switch (event.getAction()){
 
@@ -182,16 +182,25 @@ public class MainActivity extends FragmentActivity {
               Log.d(TAG,"readContacts called");
               ContentResolver contentResolver = getContentResolver();
 
-              Cursor cursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null,null);
+              Cursor cursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+ " ASC");
               cursor.moveToFirst();
 
               while (cursor.moveToNext()){
                   try{
                       b[0] = true;
-                      // contacts.put(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)),cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-                      contactsName.add(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-                     // contactsPhoto.add(openPhoto(cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts._ID))));
-
+                      String s = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                      String phone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                      int j=0;
+                      for(int i=0;i<phone.length();i++){
+                          char c = phone.charAt(i);
+                          if((int)c>=48&&(int)c<=57){
+                              j++;
+                          }
+                      }
+                      if(j==12||j==10) {
+                          if (!contactsName.contains(s))
+                              contactsName.add(s);
+                      }
                   }catch (Exception e){
                       Log.d(TAG,"error : "+cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
                   }
