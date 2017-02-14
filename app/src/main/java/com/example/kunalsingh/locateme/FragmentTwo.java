@@ -29,6 +29,7 @@ public class FragmentTwo extends Fragment {
 
 
     ArrayList<String> contactsName = new ArrayList<>();
+
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     public static final String TAG = "FragmentTwo";
@@ -44,10 +45,11 @@ public class FragmentTwo extends Fragment {
         View view = inflater.inflate(R.layout.fragment_two,container,false);
 
         ArrayList<String> child = new ArrayList<>();
-        child.add("a");
-        child.add("b");
+        child.add("View Location");
+
         Log.d(TAG,"asking for contacts");
         contactsName = MainActivity.getContacts();
+
         Log.d(TAG,"size : : "+contactsName.size());
         expandableListAdapter = new ExpandableListAdapter(getActivity(),contactsName,child);
         expandableListView = (ExpandableListView)view.findViewById(R.id.exp_list_view);

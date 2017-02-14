@@ -2,6 +2,7 @@ package com.example.kunalsingh.locateme;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,11 +70,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         Log.d(TAG,"adapter : "+i);
         String name = contactsName.get(i);
-
+        String initials = name.substring(0,1);
         if(view==null){
             LayoutInflater layoutInflater = (LayoutInflater) this.ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = layoutInflater.inflate(R.layout.list_item,viewGroup,false);
         }
+
         TextView textView = (TextView)view.findViewById(R.id.contact_name);
         textView.setHint(name);
         return view;
@@ -81,6 +83,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
+
 
         Log.d(TAG,"adapter : "+i+" "+i1);
         if(view==null) {
@@ -90,6 +93,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView textView = (TextView) view.findViewById(R.id.tv_expanded_list);
         textView.setText(child.get(i1));
+
 
         return view;
     }

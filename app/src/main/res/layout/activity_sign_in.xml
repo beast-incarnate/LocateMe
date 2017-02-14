@@ -10,10 +10,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.kunalsingh.locateme.SignInActivity">
 
+
     <android.support.design.widget.TextInputLayout
        android:id="@+id/til_sign_in_email"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        >
         <EditText
             android:id="@+id/sign_in_email"
             android:inputType="textEmailAddress"
@@ -37,8 +40,36 @@
 
     <Button
         android:id="@+id/sign_in_btn"
-        android:layout_below="@id/til_sign_in_pass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="LOGIN"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/til_sign_in_pass"
+        android:layout_centerHorizontal="true"
+        />
 
+    <TextView
+        android:clickable="true"
+        android:onClick="startLoginActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New User? Create an account."
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btn_sign_up"
+        android:textSize="20dp"
+        android:layout_marginTop="400dp"
+        />
+
+    <TextView
+        android:clickable="true"
+        android:onClick="forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot password?"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btn_sign_up"
+        android:textSize="20dp"
+        android:layout_marginTop="430dp"
+        />
 </RelativeLayout>
