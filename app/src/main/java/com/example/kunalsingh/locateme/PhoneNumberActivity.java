@@ -74,7 +74,7 @@ public class PhoneNumberActivity extends AppCompatActivity {
                     if(s1.equals("")){
                         Toast.makeText(PhoneNumberActivity.this,"Wrong",Toast.LENGTH_SHORT).show();
                         break;
-                    }
+                    }//
 
                     s=s+s1;
                 }
