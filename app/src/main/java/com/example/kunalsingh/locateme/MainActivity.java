@@ -41,6 +41,7 @@ import com.msg91.sendotp.library.VerificationListener;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends FragmentActivity {
 
@@ -197,7 +198,7 @@ public class MainActivity extends FragmentActivity {
                               j++;
                           }
                       }
-                      if(j==12||j==10) {
+                      if(j>=10&&j<=12) {
                           if (!contactsName.contains(s))
                               contactsName.add(s);
                       }
@@ -206,6 +207,7 @@ public class MainActivity extends FragmentActivity {
                   }
               }
               cursor.close();
+              Collections.sort(contactsName);
               runOnUiThread(new Runnable() {
               @Override
               public void run() {
