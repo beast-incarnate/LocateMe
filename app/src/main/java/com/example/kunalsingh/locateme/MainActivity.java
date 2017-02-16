@@ -73,6 +73,15 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        int c = Build.VERSION.SDK_INT;
+
+        if(c<21){
+            setTheme(R.style.AppTheme);
+        }
+
+        Intent intent = getIntent();
+
+
 
 
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh_main);

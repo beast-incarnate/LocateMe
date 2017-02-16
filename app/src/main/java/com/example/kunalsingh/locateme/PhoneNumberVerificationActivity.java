@@ -1,6 +1,7 @@
 package com.example.kunalsingh.locateme;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -92,11 +93,20 @@ public class PhoneNumberVerificationActivity extends AppCompatActivity {
                         public void onVerified(String response) {
                             Intent intent = new Intent(PhoneNumberVerificationActivity.this,PermisssionActivity.class);
 
-                            Firebase mRef = new Firebase("https://locateme-a9ef0.firebaseio.com/");
+                            Firebase mRefs = new Firebase("https://locateme-a9ef0.firebaseio.com/");
+
+                            Firebase mRef = mRefs.child(phoneNumber);
+
+                            SharedPreferences sharedPreferences =getSharedPreferences("FILE",0);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("PhoneNumber",phoneNumber);
+                            editor.commit();
 
                             Firebase mLat = mRef.child("Lat");
+                            mLat.setValue("0");
                             Firebase mLong = mRef.child("Long");
-                            Firebase mFriend = mRef.child("Friends");
+                            mLong.setValue("0");
+
 
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -99,14 +99,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         }
 
+
+
         ImageView imageView = (ImageView)view.findViewById(R.id.contacts_image);
-        Bitmap bitmap = Bitmap.createBitmap(100,100,Bitmap.Config.ARGB_8888);
+        imageView.setBackgroundColor(Color.argb(200,(66*name.length())%255,(130*name.length())%255,(230*name.length())%255));
+        Bitmap bitmap = Bitmap.createBitmap(150,150,Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(bitmap);
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(50.0f);
-        c.drawText(s.toUpperCase(),50.0f,65.0f,paint);
+        c.drawText(s.toUpperCase(),80.0f,85.0f,paint);
         imageView.setImageBitmap(bitmap);
 
         return view;

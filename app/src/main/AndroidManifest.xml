@@ -52,8 +52,7 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".PhoneNumberActivity">
-        </activity>
+        <activity android:name=".PhoneNumberActivity"></activity>
         <activity android:name=".PhoneNumberVerificationActivity"></activity>
     </application>
 

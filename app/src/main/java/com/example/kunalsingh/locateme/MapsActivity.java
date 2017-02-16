@@ -1,7 +1,9 @@
 package com.example.kunalsingh.locateme;
 
+import android.app.ProgressDialog;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -13,6 +15,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    public static final String TAG="MapsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +41,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+        double Lat = FragmentOne.getLat();
+//        double Long = FragmentOne.getLong();
+//        ProgressDialog progressDialog = new ProgressDialog(MapsActivity.this);
+//        while(Lat==0||Long==0){
+//            progressDialog.setMessage("Loading");
+//            Lat = FragmentOne.getLat();
+//            Long = FragmentOne.getLong();
+//            Log.d(TAG,"lat + long"+Lat+" "+Long);
+//        }
+//        progressDialog.dismiss();
+        LatLng sydney = new LatLng(FragmentOne.getLat(), FragmentOne.getLong());
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,13.0f));
     }

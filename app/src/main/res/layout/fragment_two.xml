@@ -14,5 +14,7 @@
     android:layout_height="wrap_content"
     android:textAlignment="center"
     android:groupIndicator="@null"
+    android:fastScrollEnabled="true"
+    android:fastScrollAlwaysVisible="true"
     />
 </LinearLayout>

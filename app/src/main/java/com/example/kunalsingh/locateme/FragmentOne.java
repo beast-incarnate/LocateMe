@@ -4,7 +4,10 @@ import android.*;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -24,11 +27,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+
+
 /**
  * Created by kunalsingh on 19/01/17.
  */
 
-public class FragmentOne extends Fragment {
+public class FragmentOne extends Fragment implements LocationListener {
 
 
     public static final String TAG="FragmentOne";
@@ -37,6 +43,9 @@ public class FragmentOne extends Fragment {
         setHasOptionsMenu(true);
 
     }
+
+    public static double Lat=0;
+    public static double Long=0;
 
     @Nullable
     @Override
@@ -76,6 +85,10 @@ public class FragmentOne extends Fragment {
             }else{
                 Log.d(TAG,"else called");
               view  = inflater.inflate(R.layout.fragment_one,container,false);
+
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,3*1000,5, this);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1,this);
 
             }
 
@@ -138,5 +151,46 @@ public class FragmentOne extends Fragment {
         super.onPause();
         Log.d(TAG,"OnPauseCalled");
 
+    }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Firebase mRefs = new Firebase("https://locateme-a9ef0.firebaseio.com/");
+
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("FILE",0);
+        String phone = sharedPreferences.getString("PhoneNumber","");
+
+        Firebase mRef = mRefs.child("9711890684");
+        Lat = location.getLatitude();
+        Long = location.getLongitude();
+        Firebase mLat = mRef.child("Lat");
+        mLat.setValue(location.getLatitude());
+        Firebase mLong = mRef.child("Long");
+        mLong.setValue(location.getLongitude());
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+
+    public static double getLat(){
+        return Lat;
+    }
+
+    public static double getLong(){
+        return Long;
     }
 }

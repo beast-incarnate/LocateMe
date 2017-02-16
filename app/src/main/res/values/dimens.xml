@@ -8,4 +8,5 @@
     <dimen name="list_view_item_height">50dp</dimen>
     <dimen name="left_padding_list_item">30dp</dimen>
     <dimen name="image_view_margin">5dp</dimen>
+    <dimen name="scrollbarsize">30dp</dimen>
 </resources>
