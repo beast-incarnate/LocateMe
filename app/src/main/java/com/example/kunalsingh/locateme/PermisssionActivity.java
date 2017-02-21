@@ -41,7 +41,9 @@ public class PermisssionActivity extends AppCompatActivity {
 
         String permission = Manifest.permission.READ_CONTACTS;
         int res = this.checkCallingOrSelfPermission(permission);
-        if (res == PackageManager.PERMISSION_GRANTED) {
+        String permission2 = Manifest.permission.ACCESS_FINE_LOCATION;
+        int res2 = this.checkCallingOrSelfPermission(permission2);
+        if (res == PackageManager.PERMISSION_GRANTED&&res2 == PackageManager.PERMISSION_GRANTED) {
            // new MainActivity().readContacts();
             Intent intent = new Intent(this,MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
