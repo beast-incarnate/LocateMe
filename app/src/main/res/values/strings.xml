@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">LocateMe</string>
     <string name="title_activity_maps">Map</string>
+    <string name="facebook_app_id">1818179171775937</string>
 </resources>

@@ -76,6 +76,14 @@
     <com.google.android.gms.common.SignInButton
         android:id="@+id/google_sign_in"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></com.google.android.gms.common.SignInButton>
+        android:layout_height="wrap_content">
+    </com.google.android.gms.common.SignInButton>
+
+<com.facebook.login.widget.LoginButton
+    android:id="@+id/fb_sign_in"
+    android:layout_toRightOf="@id/google_sign_in"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
 
 </RelativeLayout>
