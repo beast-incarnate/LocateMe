@@ -122,11 +122,12 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
                 ArrayList<Double> Lat = MainActivity.friendsLat;
                 ArrayList<Double> Long = MainActivity.friendsLong;
+                ArrayList<String> name = MainActivity.friendsName;
                 Log.d(TAG,"size"+" "+Lat.size());
                 Log.d(TAG,"size2 "+Long.size());
                 for(int i=0;i<Lat.size();i++){
                     Log.d(TAG,"no of freinds"+i);
-                    googleMap.addMarker(new MarkerOptions().position(new LatLng(Lat.get(i),Long.get(i))).title("Freind"+i));
+                    googleMap.addMarker(new MarkerOptions().position(new LatLng(Lat.get(i),Long.get(i))).title(name.get(i)));
                 }
 
             }

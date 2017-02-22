@@ -64,6 +64,7 @@ public class MainActivity extends FragmentActivity {
     static ArrayList<Double> friendsLat = new ArrayList<>();
     static ArrayList<Double> friendsLong = new ArrayList<>();
     static ArrayList<String> friendsPhone = new ArrayList<>();
+    static ArrayList<String> friendsName = new ArrayList<>();
 
 //    @Override
 //    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -310,7 +311,13 @@ public class MainActivity extends FragmentActivity {
                                 if(!s1[0].equals("0")) {
                                     Log.d(TAG,"came in not zero");
                                     //if(!friendsLat.contains(Double.parseDouble(s1[0])))
-                                    friendsLat.add(Double.parseDouble(s1[0]));
+                                    if(friendsName.contains(s)){
+                                        int index = friendsName.indexOf(s);
+                                        friendsLat.set(index,Double.parseDouble(s1[0]));
+                                    }else {
+                                        friendsLat.add(Double.parseDouble(s1[0]));
+                                        friendsName.add(s);
+                                    }
                                 }
                             }
                             Log.d(TAG,"lat size"+friendsLat.size());
@@ -333,8 +340,13 @@ public class MainActivity extends FragmentActivity {
                             Log.d(TAG,"change called Long"+s+" " +s2[0]);
                             if(s2[0]!=null){
                                 if(!s2[0].equals("0")) {
-                                   // if(!friendsLong.contains(Double.parseDouble(s2[0])))
-                                    friendsLong.add(Double.parseDouble(s2[0]));
+                                    // if(!friendsLong.contains(Double.parseDouble(s2[0])))
+                                    if (friendsName.contains(s)) {
+                                        int index = friendsName.indexOf(s);
+                                        friendsLong.set(index, Double.parseDouble(s2[0]));
+                                    } else {
+                                        friendsLong.add(Double.parseDouble(s2[0]));
+                                    }
                                 }
                                     Log.d(TAG,"lat size"+friendsLat.size());
                                 Log.d(TAG,"long size "+friendsLong.size());
