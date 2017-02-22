@@ -13,6 +13,10 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -31,6 +35,14 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.vision.text.Text;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 
@@ -41,11 +53,14 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     TextView tvLat, tvLong;
     LocationRequest mLocationRequest;
     double a,b;
+    ArrayList<String> contacts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        contacts = MainActivity.getContacts();
 
         if (googleApiClient == null) {
             googleApiClient = new GoogleApiClient.Builder(this)
@@ -104,6 +119,16 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 LatLng latLng = new LatLng(a,b);
                 googleMap.addMarker(new MarkerOptions().position(latLng).title("Me"));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15.0f));
+
+                ArrayList<Double> Lat = MainActivity.friendsLat;
+                ArrayList<Double> Long = MainActivity.friendsLong;
+                Log.d(TAG,"size"+" "+Lat.size());
+                Log.d(TAG,"size2 "+Long.size());
+                for(int i=0;i<Lat.size();i++){
+                    Log.d(TAG,"no of freinds"+i);
+                    googleMap.addMarker(new MarkerOptions().position(new LatLng(Lat.get(i),Long.get(i))).title("Freind"+i));
+                }
+
             }
         });
 
@@ -149,11 +174,40 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(final Location location) {
 
         if (location != null) {
             tvLat.setText(String.valueOf(location.getLatitude()));
             tvLong.setText(String.valueOf(location.getLongitude()));
+            final String[] phone = new String[1];
+            FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+            Firebase mRef = new Firebase("https://locateme-a9ef0.firebaseio.com/"+mUser.getUid()+"/PhoneNumber");
+            mRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.d(TAG, "checking class"+String.valueOf(dataSnapshot.getClass()));
+                    phone[0] =  dataSnapshot.getValue(String.class);
+                    Log.d(TAG,"phone : "+ phone[0]);
+                    Firebase mRefs = new Firebase("https://locateme-a9ef0.firebaseio.com" + "/" + phone[0] + "/");
+                    Firebase mLat = mRefs.child("Lat");
+                    mLat.setValue(String.valueOf(location.getLatitude()));
+                    Firebase mLong = mRefs.child("Long");
+                    mLong.setValue(String.valueOf(location.getLongitude()));
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+            if(phone[0]!=null) {
+                Log.d(TAG,"if checking Phone" +phone[0]);
+
+            }else{
+                Log.d(TAG,"else checking Phone" +phone[0]);
+            }
+
         }
 
     }

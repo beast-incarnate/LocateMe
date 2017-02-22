@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.msg91.sendotp.library.SendOtpVerification;
 import com.msg91.sendotp.library.Verification;
 import com.msg91.sendotp.library.VerificationListener;
@@ -93,14 +95,18 @@ public class PhoneNumberVerificationActivity extends AppCompatActivity {
                         public void onVerified(String response) {
                             Intent intent = new Intent(PhoneNumberVerificationActivity.this,PermisssionActivity.class);
 
+                            FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+
                             Firebase mRefs = new Firebase("https://locateme-a9ef0.firebaseio.com/");
+
+
 
                             Firebase mRef = mRefs.child(phoneNumber);
 
-                            SharedPreferences sharedPreferences =getSharedPreferences("FILE",0);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("PhoneNumber",phoneNumber);
-                            editor.commit();
+
+                            Firebase mUid = mRefs.child(mUser.getUid());
+                            Firebase mPhone = mUid.child("PhoneNumber");
+                            mPhone.setValue(String.valueOf(phoneNumber));
 
                             Firebase mLat = mRef.child("Lat");
                             mLat.setValue("0");
@@ -111,7 +117,6 @@ public class PhoneNumberVerificationActivity extends AppCompatActivity {
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.putExtra("PhoneNumber",phoneNumber);
                             startActivity(intent);
                         }
 

@@ -34,6 +34,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.msg91.sendotp.library.SendOtpVerification;
 import com.msg91.sendotp.library.Verification;
 import com.msg91.sendotp.library.VerificationListener;
@@ -52,6 +61,9 @@ public class MainActivity extends FragmentActivity {
     static boolean status = false;
     static SwipeRefreshLayout swipeRefreshLayout;
    static ArrayList<String> contactsName = new ArrayList<>();
+    static ArrayList<Double> friendsLat = new ArrayList<>();
+    static ArrayList<Double> friendsLong = new ArrayList<>();
+    static ArrayList<String> friendsPhone = new ArrayList<>();
 
 //    @Override
 //    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -72,6 +84,24 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+//
+//        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if(dataSnapshot.hasChild("9711890684"))
+//                    Log.d(TAG,"has it");
+//                else
+//                    Log.d(TAG,"not has");
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         int c = Build.VERSION.SDK_INT;
 
@@ -200,6 +230,11 @@ public class MainActivity extends FragmentActivity {
                       b[0] = true;
                       String s = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                       String phone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                     // Log.d(TAG,"name :"+s+" "+"phoneNumber"+phone2);
+
+                     // if(!friendsPhone.contains(phone2))
+
+
                       int j=0;
                       for(int i=0;i<phone.length();i++){
                           char c = phone.charAt(i);
@@ -210,6 +245,13 @@ public class MainActivity extends FragmentActivity {
                       if(j>=10&&j<=12) {
                           if (!contactsName.contains(s))
                               contactsName.add(s);
+                          String phone2 = phone.replaceAll("\\s+","");
+                          if(phone2.charAt(0)=='+')
+                              phone2 = phone2.substring(3,phone2.length());
+                          else if(phone2.charAt(0)=='0')
+                              phone2 = phone2.substring(1,phone2.length());
+                          friendsPhone.add(phone2);
+
                       }
                   }catch (Exception e){
                       Log.d(TAG,"error : "+cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
@@ -221,7 +263,8 @@ public class MainActivity extends FragmentActivity {
               @Override
               public void run() {
                   progress.dismiss();
-
+                  Log.d(TAG,"six of friend"+friendsPhone.size());
+                  matchContacts(friendsPhone);
               }
           });
 
@@ -232,7 +275,6 @@ public class MainActivity extends FragmentActivity {
 //      if(!b[0]){
 //          contactsName.add("Mine");
 //      }
-
 
 
   }
@@ -247,8 +289,72 @@ public class MainActivity extends FragmentActivity {
 
 
     public static SwipeRefreshLayout getSwipeRefreshLayout(){
-
         return swipeRefreshLayout;
     }
+
+
+    public void matchContacts(ArrayList<String> contactsName){
+                Log.d(TAG,"came in func"+" "+contactsName.size());
+                for (int i=0;i<contactsName.size();i++) {
+                    final String s = contactsName.get(i);
+                    Log.d(TAG,"phon "+s);
+                    Firebase mRef = new Firebase("https://locateme-a9ef0.firebaseio.com/"+s+"/"+"Lat");
+                    final String[] s1 = new String[1];
+                    mRef.addValueEventListener(new com.firebase.client.ValueEventListener() {
+                        @Override
+                        public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                             s1[0] = dataSnapshot.getValue(String.class);
+                            Log.d(TAG,"change called LAt"+s+" " +s1[0]);
+                            if(s1[0]!=null){
+                                Log.d(TAG,"came in not null");
+                                if(!s1[0].equals("0")) {
+                                    Log.d(TAG,"came in not zero");
+                                    //if(!friendsLat.contains(Double.parseDouble(s1[0])))
+                                    friendsLat.add(Double.parseDouble(s1[0]));
+                                }
+                            }
+                            Log.d(TAG,"lat size"+friendsLat.size());
+                            Log.d(TAG,"long size "+friendsLong.size());
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+
+
+                    Firebase mRef2 = new Firebase("https://locateme-a9ef0.firebaseio.com/"+s+"/"+"Long");
+                    final String[] s2 = new String[1];
+                    mRef2.addValueEventListener(new com.firebase.client.ValueEventListener() {
+                        @Override
+                        public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                            s2[0] = dataSnapshot.getValue(String.class);
+                            Log.d(TAG,"change called Long"+s+" " +s2[0]);
+                            if(s2[0]!=null){
+                                if(!s2[0].equals("0")) {
+                                   // if(!friendsLong.contains(Double.parseDouble(s2[0])))
+                                    friendsLong.add(Double.parseDouble(s2[0]));
+                                }
+                                    Log.d(TAG,"lat size"+friendsLat.size());
+                                Log.d(TAG,"long size "+friendsLong.size());
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+
+
+
+                }
+
+
+    }
+
+
+
 
 }

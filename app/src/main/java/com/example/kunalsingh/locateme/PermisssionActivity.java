@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class PermisssionActivity extends AppCompatActivity {
 
     @Override
@@ -37,7 +40,14 @@ public class PermisssionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permisssion);
 
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        if(mUser==null){
+
+            Intent intent = new Intent(this,SignInActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         String permission = Manifest.permission.READ_CONTACTS;
         int res = this.checkCallingOrSelfPermission(permission);

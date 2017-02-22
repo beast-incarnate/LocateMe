@@ -87,10 +87,8 @@ public class SignInActivity extends AppCompatActivity {
 
                 if(mUser!=null){
                     Intent in = new Intent(SignInActivity.this,PhoneNumberActivity.class);
-                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(in);
+                    finish();
                 }
 
             }

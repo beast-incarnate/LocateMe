@@ -34,7 +34,7 @@ import com.firebase.client.Firebase;
  * Created by kunalsingh on 19/01/17.
  */
 
-public class FragmentOne extends Fragment implements LocationListener {
+public class FragmentOne extends Fragment {
 
 
     public static final String TAG="FragmentOne";
@@ -87,8 +87,6 @@ public class FragmentOne extends Fragment implements LocationListener {
               view  = inflater.inflate(R.layout.fragment_one,container,false);
 
 
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,3*1000,5, this);
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1,this);
 
             }
 
@@ -154,43 +152,5 @@ public class FragmentOne extends Fragment implements LocationListener {
     }
 
 
-    @Override
-    public void onLocationChanged(Location location) {
-        Firebase mRefs = new Firebase("https://locateme-a9ef0.firebaseio.com/");
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("FILE",0);
-        String phone = sharedPreferences.getString("PhoneNumber","");
-
-        Firebase mRef = mRefs.child("9711890684");
-        Lat = location.getLatitude();
-        Long = location.getLongitude();
-        Firebase mLat = mRef.child("Lat");
-        mLat.setValue(location.getLatitude());
-        Firebase mLong = mRef.child("Long");
-        mLong.setValue(location.getLongitude());
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-
-    public static double getLat(){
-        return Lat;
-    }
-
-    public static double getLong(){
-        return Long;
-    }
 }
